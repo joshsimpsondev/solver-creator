@@ -1,7 +1,5 @@
-import Image from "next/image";
-
 async function getSolversList(){
-    const res = await fetch('https://127.0.0.1:8090/api/collections/solvers?page=1&perPage=30');
+    const res = await fetch('');
     const data = await res.json();
     return data?.items as any[];
 }
@@ -32,6 +30,13 @@ export default function SolverPage() {
                         <option>Virginia</option>
                         <option>Seattle</option>
                     </select>
+                </div>
+                <div className="w-full md:w-1/2 px-3 py-4 mb-6 md:mb-0">
+                    <button
+                        className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
+                        type="button">
+                        Add Solver to List
+                    </button>
                 </div>
             </div>
         </form>
