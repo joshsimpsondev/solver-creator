@@ -1,7 +1,6 @@
 'use server'
 import { z } from 'zod'
 import { addSolver, checkSolverDir } from "@/app/solvers/solver-list"
-import { error } from 'console'
 
 const schema = z.object({
     hostname: z.string({
