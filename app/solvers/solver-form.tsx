@@ -12,7 +12,8 @@ export default function SolverForm() {
 
     // This prevents the form from being submitted by Enter.
     const handleKeyDown = (event : React.KeyboardEvent)=> {
-        if(event.key === 'Enter' || event.key === 'NumpadEnter'){
+        // Don't allow the spacebar
+        if(event.key === 'Enter' || event.key === 'NumpadEnter' || event.key === ' '){
             event.preventDefault();
         }
     }

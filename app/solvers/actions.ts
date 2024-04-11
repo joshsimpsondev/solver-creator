@@ -1,6 +1,7 @@
 'use server'
 import { z } from 'zod'
 import { addSolver, checkSolverDir } from "@/app/solvers/solver-list"
+import { error } from 'console'
 
 const schema = z.object({
     hostname: z.string({
@@ -23,11 +24,18 @@ export default async function createSolver(prevState: any, formData : FormData) 
         }
     }
 
-    // Mutate Data
-    addSolver(validatedFields.data.hostname, validatedFields.data.location);
+    // Don't allow empty hostnames
+    if(validatedFields.data.hostname === ""){
+        return {
+            message: "Empty hostnames not allowed"
+        }
+    }
 
-    // Let User know it was sucessful
+    // Attempt to create solver
+    let returnMessage : String = addSolver(validatedFields.data.hostname.trim(), validatedFields.data.location);
+
+    // Let User know it was sucessful or not
     return {
-        message: 'Solver Submitted',
+        message: returnMessage,
     }
 }
