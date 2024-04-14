@@ -33,9 +33,8 @@ export function addSolver(hostname : string, location : string) : String {
     const newSolver : Solver = {hostname: hostname, location: location};
     if(hostnameExists(newSolver, solverList)){
         return "The Hostname Already Exists";
-    } else {
-        solverList.push(newSolver);
     }
+    solverList.push(newSolver);
     writeSolversList(solverList);
     return "Solver Added";
 }
@@ -53,13 +52,13 @@ export function removeSolver(solver : Solver) : String {
 
 // See if a hostname exists in a solverlist. 
 export function hostnameExists(solver : Solver, solverList : Solver[]) :  boolean {
-    let found : boolean = false;
-    solverList.forEach(solver => {
-        if(solver.hostname === solver.hostname)
-            found = true;
-            return;
-    });
-    return found;
+    for (const existing of solverList) {
+        if (existing.hostname === solver.hostname){
+            return true;
+        }
+    }
+
+    return false;
 }
 
 // Read all the solvers in the json file

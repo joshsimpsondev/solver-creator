@@ -5,7 +5,7 @@ import { addSolver, checkSolverDir } from "@/app/solvers/solver-list"
 const schema = z.object({
     hostname: z.string({
         invalid_type_error: "Invalid Hostname",
-    }),
+    }).min(1, "Hostname must not be empty"),
     location: z.string({
         invalid_type_error: "Invalid Location",
     }),
@@ -23,15 +23,9 @@ export default async function createSolver(prevState: any, formData : FormData) 
         }
     }
 
-    // Don't allow empty hostnames
-    if(validatedFields.data.hostname === ""){
-        return {
-            message: "Empty hostnames not allowed"
-        }
-    }
 
     // Attempt to create solver
-    let returnMessage : String = addSolver(validatedFields.data.hostname.trim(), validatedFields.data.location);
+    let returnMessage = addSolver(validatedFields.data.hostname.trim(), validatedFields.data.location);
 
     // Let User know it was sucessful or not
     return {
