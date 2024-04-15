@@ -11,8 +11,7 @@ export function Sidebar() {
         name: "About",
         href: "/about"
     }]
-
-    return <div className="bg-gray-800 text-white ">
+    return <div className="bg-gray-800 text-white">
         <nav className="">
             <ul className="py-3 flex flex-col space-y-1 px-6 ">
                 <li>

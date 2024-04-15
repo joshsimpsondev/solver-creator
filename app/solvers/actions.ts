@@ -1,6 +1,7 @@
 'use server'
 import { z } from 'zod'
-import { addSolver, checkSolverDir } from "@/app/solvers/solver-list"
+import { addSolver, Solver, removeSolverName } from "@/app/solvers/solver-list"
+
 
 const schema = z.object({
     hostname: z.string({
@@ -25,10 +26,15 @@ export default async function createSolver(prevState: any, formData : FormData) 
 
 
     // Attempt to create solver
-    let returnMessage = addSolver(validatedFields.data.hostname.trim(), validatedFields.data.location);
+    const newSolver : Solver = {hostname:validatedFields.data.hostname,location:validatedFields.data.location}
+    let returnMessage = addSolver(newSolver);
 
     // Let User know it was sucessful or not
     return {
         message: returnMessage,
     }
+}
+
+export async function removeSolverAction(hostname : string){
+    removeSolverName(hostname);
 }

@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Link from "next/link";
+import { Inter as FontSans} from "next/font/google";
 import "./globals.css";
 import {Sidebar} from "@/components/layout/sidebar";
+import { cn } from "@/lib/utils";
 
-const inter = Inter({ subsets: ["latin"] });
+const fontSans = FontSans({
+    subsets: ["latin"],
+    variable: "--font-sans",
+})
 
 export const metadata: Metadata = {
   title: "Quartus Solver App",
@@ -22,7 +25,10 @@ export default function RootLayout({
         <head>
             <link rel="icon" href="/favicon.ico"/>
         </head>
-        <body>
+        <body className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable
+        )}>
         <div className="flex h-screen bg-gray-100">
             <Sidebar />
             <div className="flex-1 p-10">

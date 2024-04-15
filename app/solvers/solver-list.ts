@@ -24,28 +24,42 @@ export function checkSolverDir() : boolean {
 }
 
 // Add solver to a json list
-export function addSolver(hostname : string, location : string) : String {
+export function addSolver(solver : Solver) : String {
     if(!checkSolverDir()){
         return "Could Not Create Directory";
     }
     // Create an empty TS object to add the read data to.
     let solverList : Solver[] = getSolversList();
-    const newSolver : Solver = {hostname: hostname, location: location};
-    if(hostnameExists(newSolver, solverList)){
+    if(hostnameExists(solver, solverList)){
         return "The Hostname Already Exists";
     }
-    solverList.push(newSolver);
+    solverList.push(solver);
     writeSolversList(solverList);
     return "Solver Added";
 }
 
 // Remove Solver from the list, I don't feel the need to check location since that isn't supposed to happen.
 export function removeSolver(solver : Solver) : String {
-    let solverList : Solver[] = getSolversList();
-    let solverIndex = solverList.indexOf(solver);
-    if(solverIndex > -1){
-        solverList.splice(solverIndex,1);
-        return "Solver Removed";
+    let solverList = getSolversList();
+    for(let x = 0; x < solverList.length; x++){
+        if(solverList[x].hostname == solver.hostname){
+            solverList.splice(x,1);
+            writeSolversList(solverList);
+            return "Solver Removed";
+        }
+    }
+    return "Solver not found";
+}
+
+// Remove Solver from the list, I don't feel the need to check location since that isn't supposed to happen.
+export function removeSolverName(solverhostname : string) : String {
+    let solverList = getSolversList();
+    for(let x = 0; x < solverList.length; x++){
+        if(solverList[x].hostname == solverhostname){
+            solverList.splice(x,1);
+            writeSolversList(solverList);
+            return "Solver Removed";
+        }
     }
     return "Solver not found";
 }
@@ -82,4 +96,14 @@ export function writeSolversList(solverList : Solver[]) : boolean {
     } catch (error) {
         return false;
     }
+}
+
+// Get First Solver in list returns an empty solver if there is nothing.
+export function getFirstSolver() : Solver {
+    const solverList  = getSolversList();
+    const firstSolver = solverList.at(0);
+    if(firstSolver){
+        return firstSolver;
+    }
+    return {hostname:"NoName",location:""};
 }
