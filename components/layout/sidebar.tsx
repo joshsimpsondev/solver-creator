@@ -21,8 +21,6 @@ export function Sidebar() {
                 {
                     navItems.map((x) => (<SidebarItem name={x.name} href={x.href} key={x.name} />))
                 }
-
-
             </ul>
         </nav>
     </div>

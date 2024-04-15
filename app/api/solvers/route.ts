@@ -1,4 +1,3 @@
-import {NextRequest} from "next/server";
 import {getSolversList} from "@/app/solvers/solver-list";
 
 function solversList() {
