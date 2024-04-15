@@ -1,6 +1,7 @@
 'use server'
 import { z } from 'zod'
-import { addSolver, Solver, removeSolverName } from "@/app/solvers/solver-list"
+import { addSolver, Solver, removeSolver, moveSolverToFirst } from "@/app/solvers/solver-list"
+import { revalidatePath } from 'next/cache'
 
 
 const schema = z.object({
@@ -12,7 +13,7 @@ const schema = z.object({
     }),
 })
 
-export default async function createSolver(prevState: any, formData : FormData) {
+export default async function createSolverAction(prevState: any, formData : FormData) {
     const validatedFields = schema.safeParse({
         hostname: formData.get("hostname"),
         location: formData.get("location"),
@@ -23,8 +24,6 @@ export default async function createSolver(prevState: any, formData : FormData) 
             error: validatedFields.error.flatten().fieldErrors,
         }
     }
-
-
     // Attempt to create solver
     const newSolver : Solver = {hostname:validatedFields.data.hostname,location:validatedFields.data.location}
     let returnMessage = addSolver(newSolver);
@@ -35,6 +34,35 @@ export default async function createSolver(prevState: any, formData : FormData) 
     }
 }
 
-export async function removeSolverAction(hostname : string){
-    removeSolverName(hostname);
+export async function removeSolverAction(formData: FormData){
+    const validatedFields = schema.safeParse({
+        hostname: formData.get("hostname"),
+        location: formData.get("location"),
+    })
+
+    if(!validatedFields.success){
+        return {
+            error: validatedFields.error.flatten().fieldErrors,
+        }
+    }
+    // Attempt to remove solver
+    const deletedSolver : Solver = {hostname:validatedFields.data.hostname,location:validatedFields.data.location}
+    removeSolver(deletedSolver);
+    revalidatePath("/")
+}
+
+export async function moveUpSolverAction(formData: FormData){
+    const validatedFields = schema.safeParse({
+        hostname: formData.get("hostname"),
+        location: formData.get("location"),
+    })
+    if(!validatedFields.success){
+        return {
+            error: validatedFields.error.flatten().fieldErrors,
+        }
+    }
+    // Attempt to move solver
+    const movedSolver : Solver = {hostname:validatedFields.data.hostname,location:validatedFields.data.location}
+    moveSolverToFirst(movedSolver);
+    revalidatePath("/");
 }

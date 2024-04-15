@@ -1,5 +1,7 @@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { removeSolverName, Solver } from "./solvers/solver-list";
+import { Solver } from "./solvers/solver-list";
+import RemoveButton from "@/components/solvers/remove-solver";
+import MoveButton from "@/components/solvers/move-solver";
 
 async function getData() {
   const res = await fetch('http://localhost:3000/api/solvers', {cache: 'no-store'})
@@ -11,7 +13,6 @@ async function getData() {
 
 export default async function HomePage() {
   const data = await getData();
-
   return (
     <main>
       <Table>
@@ -28,8 +29,7 @@ export default async function HomePage() {
             data.map((x: any) => (<SolverTableRow hostname={x.hostname} location={x.location} key={x.hostname} />))
           }
         </TableBody>
-    </Table>
-
+      </Table>
     </main>
   );
 }
@@ -40,7 +40,9 @@ function SolverTableRow(props: Solver){
     <TableRow>
       <TableCell className="font-medium"> {hostname} </TableCell>
       <TableCell className="flex items-center">
-          <label className="pr-10">{location}</label>
+          <label className="pr-10 max-w-40 min-w-32">{location}</label>
+          <MoveButton hostname={hostname} location={location}></MoveButton>
+          <RemoveButton hostname={hostname} location={location}></RemoveButton>
       </TableCell>
     </TableRow>
   )

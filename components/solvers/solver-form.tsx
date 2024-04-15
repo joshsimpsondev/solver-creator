@@ -1,6 +1,6 @@
 'use client'
 import { useFormState, useFormStatus } from "react-dom"
-import createSolver from "@/app/solvers/actions";
+import createSolverAction from "@/app/solvers/actions";
 
 const initialState = {
     message:  '',
@@ -8,7 +8,7 @@ const initialState = {
 
 export default function SolverForm() {
     const {pending} = useFormStatus();
-    const [state, formAction] = useFormState(createSolver, initialState);
+    const [state, formAction] = useFormState(createSolverAction, initialState);
 
     // This prevents the form from being submitted by Enter.
     const handleKeyDown = (event : React.KeyboardEvent)=> {

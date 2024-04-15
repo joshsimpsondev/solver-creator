@@ -51,19 +51,6 @@ export function removeSolver(solver : Solver) : String {
     return "Solver not found";
 }
 
-// Remove Solver from the list, I don't feel the need to check location since that isn't supposed to happen.
-export function removeSolverName(solverhostname : string) : String {
-    let solverList = getSolversList();
-    for(let x = 0; x < solverList.length; x++){
-        if(solverList[x].hostname == solverhostname){
-            solverList.splice(x,1);
-            writeSolversList(solverList);
-            return "Solver Removed";
-        }
-    }
-    return "Solver not found";
-}
-
 // See if a hostname exists in a solverlist. 
 export function hostnameExists(solver : Solver, solverList : Solver[]) :  boolean {
     for (const existing of solverList) {
@@ -100,10 +87,25 @@ export function writeSolversList(solverList : Solver[]) : boolean {
 
 // Get First Solver in list returns an empty solver if there is nothing.
 export function getFirstSolver() : Solver {
-    const solverList  = getSolversList();
+    const solverList = getSolversList();
     const firstSolver = solverList.at(0);
     if(firstSolver){
         return firstSolver;
     }
     return {hostname:"NoName",location:""};
+}
+
+// Move Solver to first position
+export function moveSolverToFirst(solver : Solver) {
+    const solverList = getSolversList();
+    let index = -1;
+    // Find index of element
+    for(let x = 0; x < solverList.length; x++){
+        if(solverList[x].hostname == solver.hostname){
+            index = x;
+        }
+    }
+    solverList.splice(index, 1);
+    solverList.splice(0, 0, solver);
+    writeSolversList(solverList);
 }
